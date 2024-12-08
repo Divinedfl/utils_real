@@ -355,6 +355,7 @@ Library:GiveSignal(Services.RunService.RenderStepped:Connect(function()
 
     Character.Torso.CanCollide = not Toggles.NoclipToggle.Value
     HRP.CanCollide = not Toggles.NoclipToggle.Value
+    Character.Head.CanCollide = not Toggles.NoclipToggle.Value
 end))
 
 Library:GiveSignal(Player.Idled:Connect(function()
