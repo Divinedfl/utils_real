@@ -58,12 +58,24 @@ local Sell: RemoteFunction = workspace.world.npcs:FindFirstChild("sell", true)
 local SellAll: RemoteFunction = workspace.world.npcs:FindFirstChild("sellall", true)
 local newtable = {}
 local nametable = {}
-
+local parts = {}
 for _, v in pairs(workspace.world.spawns:GetChildren()) do
     if v.Name ~= "loading" and v.Name ~= "TeleportDelay" and v.Name ~= "TpSpots" then
         newtable[v.Name] = {SpawnPart = v:FindFirstChildWhichIsA("BasePart")}
         local RealName = (if v.Name == "AncientIsle" then "Ancient Isle" elseif v.Name == "DesolateDeep" then "Desolate Deep" else v.Name)
         table.insert(nametable, RealName)
+    end
+end
+
+for _, v in pairs(Character:GetChildren()) do
+    if v:IsA("BasePart") then
+        table.insert(parts, v)
+    elseif v:IsA("Model") then
+        for _, x in pairs(v:GetChildren()) do
+            if x:IsA("BasePart") then
+                table.insert(parts, x)
+            end
+        end
     end
 end
 
@@ -340,6 +352,9 @@ Library:GiveSignal(Services.RunService.RenderStepped:Connect(function()
         Humanoid.WalkSpeed = if Toggles.AnchorPlayer.Value then 0 else Options.Walkspeed.Value
         Humanoid.JumpPower = Options.JumpPower.Value
     end
+
+    Character.Torso.CanCollide = not Toggles.NoclipToggle.Value
+    HRP.CanCollide = not Toggles.NoclipToggle.Value
 end))
 
 Library:GiveSignal(Player.Idled:Connect(function()
@@ -369,6 +384,7 @@ Library:OnUnload(function()
     for _, v in pairs(workspace.zones.fishing:GetChildren()) do
         v.CanCollide = true
     end
+    Services.Lighting.Ambient = Color3.new(0, 0, 0)
     print("silly v2: Unloaded Fisch script!")
     getgenv().Loading = false
     getgenv().Loaded = false
