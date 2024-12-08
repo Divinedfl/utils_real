@@ -54,15 +54,16 @@ local Events: Folder = Services.ReplicatedStorage:WaitForChild("events")
 local Drown: RemoteEvent = Events:WaitForChild("drown")
 local oldmouse1click = mouse1click
 local Functions = {}
-local Sell: RemoteFunction = workspace.world.npcs["Marc Merchant"].merchant.sell
-local SellAll: RemoteFunction = workspace.world.npcs["Marc Merchant"].merchant.sellall
+local Sell: RemoteFunction = workspace.world.npcs:FindFirstChild("sell", true)
+local SellAll: RemoteFunction = workspace.world.npcs:FindFirstChild("sellall", true)
 local newtable = {}
 local nametable = {}
 
 for _, v in pairs(workspace.world.spawns:GetChildren()) do
     if v.Name ~= "loading" and v.Name ~= "TeleportDelay" and v.Name ~= "TpSpots" then
         newtable[v.Name] = {SpawnPart = v:FindFirstChildWhichIsA("BasePart")}
-        table.insert(nametable, v.Name)
+        local RealName = (if v.Name == "AncientIsle" then "Ancient Isle" elseif v.Name == "DesolateDeep" then "Desolate Deep" else v.Name)
+        table.insert(nametable, RealName)
     end
 end
 
@@ -383,10 +384,6 @@ MenuGroup:AddToggle("showKeybinds", {
     end
 })
 MenuGroup:AddLabel("Menu bind"):AddKeyPicker("MenuKeybind", { Default = "RightShift", NoUI = true, Text = "Menu Keybind" })
-MenuGroup:AddToggle("KeepScript", {
-    Text = "Execute On Teleport",
-    Default = false
-})
 MenuGroup:AddToggle("CustomCursor", {
     Text = "Show Custom Cursor",
     Default = true,
