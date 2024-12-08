@@ -293,6 +293,14 @@ LocationsTeleport:AddButton({
     end
 })
 
+Toggles.NoclipToggle:OnChanged(function(value)
+    if not value then
+        Character.Torso.CanCollide = not Toggles.NoclipToggle.Value
+        HRP.CanCollide = not Toggles.NoclipToggle.Value
+        Character.Head.CanCollide = not Toggles.NoclipToggle.Value
+    end
+end)
+
 Toggles.FlyToggle:OnChanged(function(value)
     FlyUtility:Set(value)
 end)
@@ -353,9 +361,11 @@ Library:GiveSignal(Services.RunService.RenderStepped:Connect(function()
         Humanoid.JumpPower = Options.JumpPower.Value
     end
 
-    Character.Torso.CanCollide = not Toggles.NoclipToggle.Value
-    HRP.CanCollide = not Toggles.NoclipToggle.Value
-    Character.Head.CanCollide = not Toggles.NoclipToggle.Value
+    if Toggles.NoclipToggle.Value then
+        Character.Torso.CanCollide = not Toggles.NoclipToggle.Value
+        HRP.CanCollide = not Toggles.NoclipToggle.Value
+        Character.Head.CanCollide = not Toggles.NoclipToggle.Value
+    end
 end))
 
 Library:GiveSignal(Player.Idled:Connect(function()
